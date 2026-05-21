@@ -1,29 +1,45 @@
-@extends(layout.app)
-@section('content')
-    @foreach($courses as $course)
-        <h3>{{ $course->title }}</h3>
-        @can('update', $course)
-            <a href="{{ route('courses.edit', $course->id) }}">
-                Modifier
-            </a>
-        @endcan
-        @can('delete', $course)
-            <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
+<x-layout>
+   <table class="min-w-full border border-gray-300">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="border px-4 py-2 text-left">Titre</th>
+            
+            <th class="border px-4 py-2 text-left">Suppression</th>
+        </tr>
+    </thead>
 
-                <button type="submit">
-                    Supprimer
-                </button>
-            </form>
-        @endcan
-        @cannot('update', $course)
-            <p>Vous ne pouvez pas modifier ce cours</p>
-        @endcannot
+    <tbody>
+        @foreach($courses as $course)
+            <tr>
+                <td class="border px-4 py-2">
+                    {{ $course->title }}
+                </td>
 
-    @endforeach
+              
+
+                <td class="border px-4 py-2">
+                    @can('delete', $course)
+                        <form action="{{ route('courses.destroy', $course->id) }}"
+                              method="POST">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                    class="bg-red-500 text-white px-3 py-1 rounded">
+                                Supprimer
+                            </button>
+                        </form>
+                    @else
+                        <span class="text-gray-500">
+                            Non autorisé
+                        </span>
+                    @endcan
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
 
 
-
-@endsection
+</x-layout>

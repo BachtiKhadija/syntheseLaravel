@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Course;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -13,6 +13,9 @@ class CourseController extends Controller
     public function index()
     {
         //
+        $courses=Course::all();
+        return view('Courses.index',compact('courses'));
+
     }
 
     /**
@@ -20,15 +23,34 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('Courses.add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+        // Upload image
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('courses', 'public');
+        }
+
+        // Sauvegarde
+        Course::create([
+            'user_id' => auth()->id(),
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'image' => $validated['image'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('courses.index')
+            ->with('success', 'Produit ajouté avec succès.');
     }
 
     /**
@@ -77,4 +99,4 @@ class CourseController extends Controller
     return redirect()->route('courses.index');
 }
     }
-}
+

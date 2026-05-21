@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CourseController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -17,13 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'teacher'])
-    ->prefix('teacher')
-    ->name('teacher.')
-    ->group(function () {
-
-        Route::resource('courses', CourseController::class);
-
-});
-
+Route::get('courses',[CourseController::class,'index'])->name('courses.index');
+Route::get('courses/add',[CourseController::class,'create'])->name('courses.create');
+Route::post('courses',[CourseController::class,'store'])->name('courses.store');
+Route::get('courses/{id}',[CourseController::class,'edit'])->name('courses.edit');
+Route::delete('courses',[CourseController::class,'destroy'])->name('courses.destroy');
 require __DIR__.'/auth.php';
