@@ -4,6 +4,6 @@
     <nav>
         <a href="{{url('/courses')}}">Liste cours</a>
         <a href="{{route('courses.create')}}">Ajouter Cours</a>
-        <a href="{{ route('courses.trash') }}">Corbeille</a>
+        <a href="{{route('courses.trash')}}">Corbeille</a>
     </nav>
 </header>

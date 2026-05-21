@@ -19,25 +19,26 @@ Route::middleware('auth')->group(function () {
 });
 //CourseController
 /****************Version sans regroupement************* */
-/*Route::get('courses',[CourseController::class,'index'])->name('courses.index');
+Route::get('courses',[CourseController::class,'index'])->name('courses.index');
+Route::get('/courses/trash', [CourseController::class,'trash'])->name('courses.trash');
 Route::get('courses/add',[CourseController::class,'create'])->name('courses.create');
 Route::post('courses',[CourseController::class,'store'])->name('courses.store');
 Route::get('courses/{id}',[CourseController::class,'edit'])->name('courses.edit');
-Route::delete('courses',[CourseController::class,'destroy'])->name('courses.destroy');*/
+Route::delete('courses/{course}',[CourseController::class,'destroy'])->name('courses.destroy');
 /***************Version avec regroupement ********************** */
-Route::prefix('courses')
+/*Route::prefix('courses')
     ->name('courses.')
     ->controller(CourseController::class)
-    ->middleware(['auth', 'isTeacher']) // ajoute aussi isAdmin si besoin
+    ->middleware(['auth']) // ajoute aussi isAdmin si besoin
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/add', 'create')->name('create');
         Route::post('/', 'store')->name('store');
         Route::get('/{id}', 'edit')->name('edit');
-        Route::delete('/', 'destroy')->name('destroy');
-    });
+        Route::delete('/{course}', 'destroy')->name('destroy');
+    });*/
 //*************Gérer la corbeille ***************/
-Route::get('/courses/trash', [CourseController::class,'trash'])->name('courses.trash');
+
 Route::post('/courses/{id}/restore', [CourseController::class,'restore'])->name('courses.restore');
 Route::delete('/courses/{id}/force-delete', [CourseController::class,'forceDelete'])->name('courses.forceDelete');
 //CourseCategoryController

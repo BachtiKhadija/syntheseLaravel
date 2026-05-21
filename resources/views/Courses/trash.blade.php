@@ -1,7 +1,7 @@
 <x-layout>
 <h2>Corbeille des cours</h2>
 
-<table border="1">
+<table border="1" class="table table-striped">
     <tr>
         <th>ID</th>
         <th>Nom</th>

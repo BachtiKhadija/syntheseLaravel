@@ -27,6 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+         $table->dropForeign(['module_id']);
+         $table->dropColumn('module_id');
         Schema::dropIfExists('courses');
     }
 };

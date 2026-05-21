@@ -1,4 +1,20 @@
 <x-layout>
+    <form method="GET" action="{{ route('courses.index') }}" class="mb-4">
+    <select name="module_id" class="border p-2 rounded">
+        <option value="">-- Tous les modules --</option>
+
+        @foreach($modules as $module)
+            <option value="{{ $module->id }}"
+               
+                {{ $module->nom }}
+            </option>
+        @endforeach
+    </select>
+
+    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">
+        Filtrer
+    </button>
+</form>
    <table class="min-w-full border border-gray-300">
     <thead class="bg-gray-100">
         <tr>
@@ -31,7 +47,7 @@
 
                 <td class="border px-4 py-2">
                     @can('delete', $course)
-                        <form action="{{ route('courses.destroy', $course->id) }}"
+                        <form action="{{ route('courses.destroy', $course) }}"
                               method="POST">
                             @csrf
                             @method('DELETE')

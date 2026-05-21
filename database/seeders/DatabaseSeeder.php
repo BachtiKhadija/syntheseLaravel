@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Profil;
 use App\Models\Course;
 use App\Models\Category;
+use App\Models\Module;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -34,11 +35,13 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $user->id
             ]);
                                        }
+        $modules=Module::factory(10)->create();
         
         $courses=collect();//[] array()
         foreach ($teachers as $teacher) {
         $teacherCourses = Course::factory(3)->create([
-                'user_id' => $teacher->id
+                'user_id' => $teacher->id,
+                'module_id' => $modules->random()->id,
             ]);
             //ajouter les cours de chaque teacher à la table $courses
             $courses->merge( $teacherCourses);

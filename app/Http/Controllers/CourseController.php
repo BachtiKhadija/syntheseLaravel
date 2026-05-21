@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 use App\Models\Course;
+use App\Models\Module;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CourseController extends Controller
 {
+      use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-        $courses=Course::paginate(8);
-        return view('Courses.index',compact('courses'));
+   public function index(Request $request)
+   {
+    $modules = Module::all();
+    $courses = Course::with('module');
+    if ($request->module_id) {
+        $courses = $courses->where('module_id', $request->module_id);
     }
+    $courses = $courses->paginate(10);
+ return view('courses.index', compact('courses', 'modules'));
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -72,8 +79,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        $this->authorize('update', $course);
+       
 
     $course->update([
         'title' => $request->title,
@@ -87,11 +93,10 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
         //
-        $course=Course::findOrFail($id);
-         $this->authorize('delete', $course);
+    
 
     $course->delete();
 
