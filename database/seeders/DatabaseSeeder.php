@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $teacherCourses = Course::factory(3)->create([
                 'user_id' => $teacher->id
             ]);
-
+            //ajouter les cours de chaque teacher à la table $courses
             $courses->merge( $teacherCourses);
       
            

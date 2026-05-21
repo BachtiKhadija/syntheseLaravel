@@ -13,11 +13,9 @@ class CourseController extends Controller
     public function index()
     {
         //
-        $courses=Course::paginate(5);
+        $courses=Course::paginate(8);
         return view('Courses.index',compact('courses'));
-
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -92,11 +90,32 @@ class CourseController extends Controller
     public function destroy(string $id)
     {
         //
+        $course=Course::findOrFail($id);
          $this->authorize('delete', $course);
 
     $course->delete();
 
     return redirect()->route('courses.index');
-}
     }
+
+    //gérer la corbeille
+    public function trash()
+    {
+    $courses = Course::onlyTrashed()->get();
+    return view('courses.trash',compact('courses'));
+    }
+    public function restore($id)
+     {
+    $course = Course::onlyTrashed()->findOrFail($id);
+    $course->restore();
+    return redirect()->route('courses.trash')->with('success', 'Cours restauré');
+    }
+    public function forceDelete($id)
+    {
+    $course = Course::onlyTrashed()->findOrFail($id);
+    $course->forceDelete();
+    return redirect()->route('courses.trash')->with('success', 'Cours supprimé définitivement');
+   }
+
+}
 
