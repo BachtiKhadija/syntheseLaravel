@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseCategoryController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,4 +23,12 @@ Route::get('courses/add',[CourseController::class,'create'])->name('courses.crea
 Route::post('courses',[CourseController::class,'store'])->name('courses.store');
 Route::get('courses/{id}',[CourseController::class,'edit'])->name('courses.edit');
 Route::delete('courses',[CourseController::class,'destroy'])->name('courses.destroy');
+Route::get('/courses/{course}/categories', [CourseCategoryController::class, 'edit'])
+    ->name('courses.categories.edit');
+
+Route::post('/courses/{course}/categories', [CourseCategoryController::class, 'update'])
+    ->name('courses.categories.update');
+
+
+
 require __DIR__.'/auth.php';

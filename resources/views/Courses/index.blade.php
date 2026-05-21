@@ -3,8 +3,9 @@
     <thead class="bg-gray-100">
         <tr>
             <th class="border px-4 py-2 text-left">Titre</th>
-            
+            <th class="border px-4 py-2 text-left">Modification</th>
             <th class="border px-4 py-2 text-left">Suppression</th>
+        <th class="border px-4 py-2 text-left">Ctegories</th>
         </tr>
     </thead>
 
@@ -15,7 +16,18 @@
                     {{ $course->title }}
                 </td>
 
-              
+                <td class="border px-4 py-2">
+                    @can('update', $course)
+                        <a href="{{ route('courses.edit', $course->id) }}"
+                           class="text-blue-600 hover:underline">
+                            Modifier
+                        </a>
+                    @else
+                        <span class="text-red-500">
+                            Non autorisé
+                        </span>
+                    @endcan
+                </td>
 
                 <td class="border px-4 py-2">
                     @can('delete', $course)
@@ -35,11 +47,17 @@
                         </span>
                     @endcan
                 </td>
+                <td>
+                    <a href="{{ route('courses.categories.edit', $course->id) }}"
+                    class="btn btn-info btn-sm">
+                        Categories
+                    </a>
+               </td>
             </tr>
         @endforeach
     </tbody>
 </table>
-
+{{$courses->links()}}
 
 
 </x-layout>
